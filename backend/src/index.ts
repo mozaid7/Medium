@@ -23,45 +23,53 @@ app.use('/api.v1/blog/*', async (c,next) => {
   }
 })
 
-app.post('/api/v1/signup', async (c) => {
+app.post('/api/v1/user/signup', async (c) => {
+  const body = await c.req.json();
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
-  const body = await c.req.json();
   
-  const user = await prisma.user.create({
-    data: {
-      username: body.username,
-      password: body.password,
-    },
-  });
-
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET)
-  return c.json({
-    jwt: token
-  })
+  try {
+    const user = await prisma.user.create({
+      data: {
+        username: body.username,
+        password: body.password,
+        name: body.name,
+      },
+    });
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET)
+    return c.json({
+      jwt: token
+    })
+  } catch (error) {
+    c.status(411);
+    return c.text("Invalid")
+  }
 });
 
-app.post('/api/v1/signin', async (c) => {
+app.post('/api/v1/user/signin', async (c) => {
+  const body = await c.req.json();
   const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
+    datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const body = await c.req.json();
-  const user = await prisma.user.findUnique({
+  try {
+    const user = await prisma.user.findUnique({
       where: {
-          username: body.username,
-          password: body.password
+        username: body.username,
+        password: body.password
       }
-  });
-
-  if (!user) {
+    })
+    if (!user) {
       c.status(403);
       return c.json({ error: "user not found" });
+    }
+    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
+    return c.json({ jwt });
+  } catch (error) {
+    c.status(411);
+    return c.text("Invalid")
   }
-
-  const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-  return c.json({ jwt });
 });
 
 export default app
