@@ -13,19 +13,26 @@ export const blogRouter = new Hono<{
     }
 }>();
 
-blogRouter.use('/*', async (c,next) => {
+blogRouter.use("/*", async (c, next) => {
     const authHeader = c.req.header("authorization") || "";
-    // Bearer Token => ["Bearer", "Token"]
-    const token = authHeader.split(" ")[1];
-    const user = await verify(token, c.env.JWT_SECRET)
-    if (user) {
-        c.set("userId", user.id);
+    try {
+      const user = await verify(authHeader, c.env.JWT_SECRET);
+      if (user && typeof user.id === "number") {
+        c.set("userId", user.id.toString()); // Convert user.id to string
         await next();
-    } else {
-      c.status(403)
-      return c.json({error: "unauthorized"})
+      } else {
+        c.status(403);
+        return c.json({
+          message: "You are not logged in",
+        });
+      }
+    } catch (error) {
+      c.status(403);
+      return c.json({
+        message: "You are not logged in",
+      });
     }
-})
+});
 
 blogRouter.post('/', async (c) => {
     const body = await c.req.json();
@@ -68,8 +75,19 @@ blogRouter.put('/', async (c) => {
     })
 });
 
-blogRouter.get('/', async (c) => {
-    const body = await c.req.json();
+blogRouter.get('/bulk', async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+    const blogs = await prisma.blog.findMany();
+
+    return c.json({
+        blogs
+    })
+})
+
+blogRouter.get('/:id', async (c) => {
+    const id = c.req.param("id");
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -77,7 +95,7 @@ blogRouter.get('/', async (c) => {
     try {
         const blog = await prisma.blog.findFirst({
             where: {
-                id: body.id
+                id: Number(id)
             },
         });
     
@@ -91,15 +109,4 @@ blogRouter.get('/', async (c) => {
         })
     }
     
-})
-
-blogRouter.get('/bulk', async (c) => {
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
-    const blogs = await prisma.blog.findMany();
-
-    return c.json({
-        blogs
-    })
 })
