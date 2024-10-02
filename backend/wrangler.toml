@@ -4,4 +4,5 @@ compatibility_date = "2024-10-01"
 compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
-DATABASE_URL=""
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiY2Y0YjdiZTItNGQ1YS00YWM5LWEyMjMtNTJiMGY1YzdiZTZkIiwidGVuYW50X2lkIjoiMjVjYTM2MTMwMWNlOGM4ZjEwYjEzZmRkNThjNGQ4Y2FiODFhMjJiN2VjY2FlYmIxNGI1MGNhNDQ3YzhjNTVkMiIsImludGVybmFsX3NlY3JldCI6ImY4NGY5MTY1LTc3MzctNDIzOC05MzA0LTMzMDZkYjhmMjk3ZiJ9.POOp1n7kGUX1dz-ZXfEsPQo93c4baaXSsam8MYlScTI"
+JWT_SECRET="zaid-server"
