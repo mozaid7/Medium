@@ -1,2 +1,2 @@
 
-export const BACKEND_URL = "http://localhost:8787"
+export const BACKEND_URL = "https://mediumproject.mohammedzee98.workers.dev"
