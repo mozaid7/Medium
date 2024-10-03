@@ -50,13 +50,13 @@ export const Auth = ({type}: {type: "signup" | "signin"}) => {
                     <LabelledInput label="Username" placeholder="example@gmail.com" onChange={(e) => {
                         setPostInputs({
                             ...postInputs,
-                            name: e.target.value
+                            username: e.target.value
                         })
                     }} />
                     <LabelledInput label="Password" type={"password"} placeholder="example123" onChange={(e) => {
                         setPostInputs({
                             ...postInputs,
-                            name: e.target.value
+                            password: e.target.value
                         })
                     }} />
                     <button 
