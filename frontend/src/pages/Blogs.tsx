@@ -1,7 +1,15 @@
 import { AppBar } from "../Components/AppBar"
 import { BlogCard } from "../Components/BlogCard"
+import { useBlogs } from "../Hooks"
 
 export const Blogs = () => {
+    const {loading, blogs} = useBlogs();
+    
+    if (loading) {
+        return <div>
+            loading...
+        </div>
+    }
     return <div>
         <AppBar />
         <div className="flex justify-center">
