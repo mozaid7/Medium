@@ -4,7 +4,7 @@ import { useBlogs } from "../Hooks"
 
 export const Blogs = () => {
     const {loading, blogs} = useBlogs();
-    
+
     if (loading) {
         return <div>
             loading...
@@ -14,21 +14,12 @@ export const Blogs = () => {
         <AppBar />
         <div className="flex justify-center">
             <div className="max-w-xl">
-            <BlogCard
-                authorName={"Syed Zaid"}
-                title={"Title of the Blog is very big without any production changes"}
-                content={"Title of the Blog is very big without any production changes of the Blog"}
-                publishedDate={"4th Oct 2024"}/>
-            <BlogCard
-                authorName={"Syed Zaid"}
-                title={"Title of the Blog is very big without any production changes"}
-                content={"Title of the Blog is very big without any production changes of the Blog"}
-                publishedDate={"4th Oct 2024"}/>
-            <BlogCard
-                authorName={"Syed Zaid"}
-                title={"Title of the Blog is very big without any production changes"}
-                content={"Title of the Blog is very big without any production changes of the Blog"}
-                publishedDate={"4th Oct 2024"}/>
+                {blogs.map(blog => <BlogCard
+                authorName={blog.author.name || "Random"}
+                title={blog.title}
+                content={blog.content}
+                publishedDate={"4th Oct 2024"}
+            />)}
             </div>
         </div>
     </div>
