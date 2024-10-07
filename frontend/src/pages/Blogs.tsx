@@ -1,27 +1,32 @@
-import { AppBar } from "../Components/AppBar"
-import { BlogCard } from "../Components/BlogCard"
-import { useBlogs } from "../Hooks"
+import { AppBar } from "../Components/AppBar";
+import { BlogCard } from "../Components/BlogCard";
+import { useBlogs } from "../Hooks";
 
 export const Blogs = () => {
-    const {loading, blogs} = useBlogs();
-
+    const { loading, blogs } = useBlogs();
     if (loading) {
-        return <div>
-            loading...
+      return (
+        <div>
+          <AppBar />
         </div>
+      );
     }
-    return <div>
-        <AppBar />
-        <div className="flex justify-center">
+    return (
+        <div>
+          <AppBar />
+          <div className="flex justify-center">
             <div>
-                {blogs.map(blog => <BlogCard
-                id={blog.id}
-                authorName={blog.author.name || "Random"}
-                title={blog.title}
-                content={blog.content}
-                publishedDate={"4th Oct 2024"}
-            />)}
+              {blogs.map((blog) => (
+                <BlogCard
+                  id={blog.id}
+                  authorName={blog.author.name || "Anonymous"}
+                  title={blog.title}
+                  content={blog.content}
+                  publishedDate={"29 July 2024"}
+                />
+              ))}
             </div>
+          </div>
         </div>
-    </div>
-}
+    )
+};
