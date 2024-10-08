@@ -43,8 +43,7 @@ export const Publish = () => {
 }
 
 function TextEditor({ onChange }: {onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void}) {
-    return (
-      <form>
+    return <div className="mt-2">
         <div className="w-full mb-4 ">
           <div className="flex items-center justify-between border ">
             <div className="my-2 px-2 bg-white rounded-b-lg w-full">
@@ -60,6 +59,5 @@ function TextEditor({ onChange }: {onChange: (e: ChangeEvent<HTMLTextAreaElement
             </div>
           </div>
         </div>
-      </form>
-    )
+    </div>
 }
