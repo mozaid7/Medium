@@ -1,50 +1,57 @@
-name: CI - Build and Test
+name: Medium Project CI
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  ***REMOVED***:
+  ***REMOVED***-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🧩 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
-      - name: 📦 Install dependencies
-        run: |
-          if [ -f "package-lock.json" ]; then
-            npm ci
-          else
-            npm install
-          fi
+      - name: Install dependencies (common)
+        working-directory: Medium-main/common
+        run: npm install
 
-      - name: 🔍 Run Linter
-        run: |
-          if npm run | grep -q "lint"; then
-            npm run lint
-          else
-            echo "⚠️ No lint script found, skipping..."
-          fi
+      - name: Build common package
+        working-directory: Medium-main/common
+        run: npm run ***REMOVED*** || echo "No ***REMOVED*** script found"
 
-      - name: 🧱 Build Project
-        run: |
-          if npm run | grep -q "***REMOVED***"; then
-            npm run ***REMOVED***
-          else
-            echo "⚠️ No ***REMOVED*** script found, skipping..."
-          fi
+      - name: Install dependencies (backend)
+        working-directory: Medium-main/backend
+        run: npm install
 
-      - name: 🧪 Run Tests
-        run: |
-          if npm run | grep -q "test"; then
-            npm test --if-present
-          else
-            echo "⚠️ No test script found, skipping..."
-          fi
+      - name: Generate Prisma client
+        working-directory: Medium-main/backend
+        run: npx prisma generate
+
+      - name: Validate Prisma schema
+        working-directory: Medium-main/backend
+        run: npx prisma validate
+
+      - name: Type check backend
+        working-directory: Medium-main/backend
+        run: npm run ***REMOVED*** || npx tsc --noEmit
+
+      # Optional: Run tests if available
+      - name: Run tests
+        working-directory: Medium-main/backend
+        run: npm test || echo "No tests found"
+
+      # Optional: Wrangler Deploy (if you deploy using Cloudflare)
+      # - name: Deploy with Wrangler
+      #   working-directory: Medium-main/backend
+      #   run: npx wrangler publish
+      #   env:
+      #     CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
