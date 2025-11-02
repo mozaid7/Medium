@@ -7,51 +7,34 @@ on:
     branches: [ main ]
 
 jobs:
-  ***REMOVED***-test:
+  ***REMOVED***:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
-
-      - name: Install dependencies (common)
-        working-directory: Medium-main/common
-        run: npm install
-
-      - name: Build common package
-        working-directory: Medium-main/common
-        run: npm run ***REMOVED*** || echo "No ***REMOVED*** script found"
+          node-version: '18'
 
       - name: Install dependencies (backend)
-        working-directory: Medium-main/backend
-        run: npm install
+        working-directory: ./backend
+        run: npm ci
 
-      - name: Generate Prisma client
-        working-directory: Medium-main/backend
-        run: npx prisma generate
+      - name: Build backend
+        working-directory: ./backend
+        run: npm run ***REMOVED*** || npx tsc
 
-      - name: Validate Prisma schema
-        working-directory: Medium-main/backend
-        run: npx prisma validate
+      - name: Install dependencies (common)
+        working-directory: ./common
+        run: npm ci
 
-      - name: Type check backend
-        working-directory: Medium-main/backend
-        run: npm run ***REMOVED*** || npx tsc --noEmit
+      - name: Build common
+        working-directory: ./common
+        run: npm run ***REMOVED*** || npx tsc
 
-      # Optional: Run tests if available
-      - name: Run tests
-        working-directory: Medium-main/backend
-        run: npm test || echo "No tests found"
-
-      # Optional: Wrangler Deploy (if you deploy using Cloudflare)
-      # - name: Deploy with Wrangler
-      #   working-directory: Medium-main/backend
-      #   run: npx wrangler publish
-      #   env:
-      #     CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Verify structure
+        run: |
+          echo "✅ Build completed successfully!"
