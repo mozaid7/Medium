@@ -1,0 +1,50 @@
+name: CI - Build and Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ***REMOVED***:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧩 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies
+        run: |
+          if [ -f "package-lock.json" ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: 🔍 Run Linter
+        run: |
+          if npm run | grep -q "lint"; then
+            npm run lint
+          else
+            echo "⚠️ No lint script found, skipping..."
+          fi
+
+      - name: 🧱 Build Project
+        run: |
+          if npm run | grep -q "***REMOVED***"; then
+            npm run ***REMOVED***
+          else
+            echo "⚠️ No ***REMOVED*** script found, skipping..."
+          fi
+
+      - name: 🧪 Run Tests
+        run: |
+          if npm run | grep -q "test"; then
+            npm test --if-present
+          else
+            echo "⚠️ No test script found, skipping..."
+          fi
