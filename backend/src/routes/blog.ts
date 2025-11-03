@@ -17,7 +17,7 @@ export const blogRouter = new Hono<{
 blogRouter.use("/*", async (c, next) => {
     const authHeader = c.req.header("authorization") || "";
     try {
-      const user = await verify(authHeader, c***REMOVED***.JWT_SECRET);
+      const user = await verify(authHeader, c.env.JWT_SECRET);
       if (user && typeof user.id === "number") {
         c.set("userId", user.id.toString()); // Convert user.id to string
         await next();
@@ -47,7 +47,7 @@ blogRouter.post('/', async (c) => {
 
     const authorId = c.get("userId");
     const prisma = new PrismaClient({
-        datasourceUrl: c***REMOVED***.DATABASE_URL,
+        datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
     const blog = await prisma.blog.create({
@@ -74,7 +74,7 @@ blogRouter.put('/', async (c) => {
     }
     
     const prisma = new PrismaClient({
-        datasourceUrl: c***REMOVED***.DATABASE_URL,
+        datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
     const blog = await prisma.blog.update({
@@ -94,7 +94,7 @@ blogRouter.put('/', async (c) => {
 
 blogRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
-        datasourceUrl: c***REMOVED***.DATABASE_URL,
+        datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
     const blogs = await prisma.blog.findMany({
         select: {
@@ -117,7 +117,7 @@ blogRouter.get('/bulk', async (c) => {
 blogRouter.get('/:id', async (c) => {
     const id = c.req.param("id");
     const prisma = new PrismaClient({
-        datasourceUrl: c***REMOVED***.DATABASE_URL,
+        datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
     try {

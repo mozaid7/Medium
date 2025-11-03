@@ -1,5 +1,5 @@
 # prod
-***REMOVED***/
+dist/
 
 # dev
 .yarn/
@@ -12,17 +12,17 @@
 .idea/shelf
 
 # deps
-***REMOVED***/
+node_modules/
 .wrangler
 
 # env
-***REMOVED***
-***REMOVED***.production
+.env
+.env.production
 .dev.vars
 
 # logs
 logs/
-***REMOVED***
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -30,4 +30,4 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # misc
-***REMOVED***
+.DS_Store

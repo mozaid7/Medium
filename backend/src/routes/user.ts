@@ -21,7 +21,7 @@ userRouter.post('/signup', async (c) => {
         })
     }
     const prisma = new PrismaClient({
-        datasourceUrl: c***REMOVED***.DATABASE_URL,
+        datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
     try {
@@ -32,7 +32,7 @@ userRouter.post('/signup', async (c) => {
             name: body.name,
         },
         });
-        const token = await sign({ id: user.id }, c***REMOVED***.JWT_SECRET)
+        const token = await sign({ id: user.id }, c.env.JWT_SECRET)
         return c.json({
         jwt: token
         })
@@ -53,7 +53,7 @@ userRouter.post('/signin', async (c) => {
     }
 
     const prisma = new PrismaClient({
-        datasourceUrl: c***REMOVED***.DATABASE_URL,
+        datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
     try {
@@ -67,7 +67,7 @@ userRouter.post('/signin', async (c) => {
         c.status(403);
         return c.json({ error: "user not found" });
         }
-        const jwt = await sign({ id: user.id }, c***REMOVED***.JWT_SECRET);
+        const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
         return c.json({ jwt });
     } catch (error) {
         c.status(411);

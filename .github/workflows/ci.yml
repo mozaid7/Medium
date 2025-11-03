@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  ***REMOVED***:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: Build backend
         working-directory: ./backend
         run: |
-          npm run ***REMOVED*** || echo "Skipping backend ***REMOVED*** errors"
+          npm run build || echo "Skipping backend build errors"
 
       - name: Install dependencies (common)
         working-directory: ./common
@@ -37,7 +37,7 @@ jobs:
       - name: Build common
         working-directory: ./common
         run: |
-          npm run ***REMOVED*** || echo "Skipping common ***REMOVED*** errors"
+          npm run build || echo "Skipping common build errors"
 
       - name: ✅ CI Passed
         run: echo "Build simulation completed successfully ✅"

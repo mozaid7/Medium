@@ -1,22 +1,22 @@
 # Logs
 logs
-***REMOVED***
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-***REMOVED***
-***REMOVED***
-***REMOVED***-ssr
+node_modules
+dist
+dist-ssr
 *.local
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-***REMOVED***
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
