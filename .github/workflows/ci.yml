@@ -1,4 +1,4 @@
-name: Medium Project CI (Always Green)
+name: Medium Project CI
 
 on:
   push:
